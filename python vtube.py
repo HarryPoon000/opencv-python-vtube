@@ -28,7 +28,7 @@ eyes = []
 while True:
     ret, frame = cap.read()
     back = np.zeros((int(hei),int(wid),3), np.uint8)
-    back[:,0:int(cap.get(3))] = (255,0,0) #set background as blue (B,G,R)
+    back[:,0:int(wid)] = (255,0,0) #set background as blue (B,G,R)
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.2, 5)
