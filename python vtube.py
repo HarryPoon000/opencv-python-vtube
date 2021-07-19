@@ -13,29 +13,32 @@ fy=0
 fw=0
 fh=0
 
+wid = cap.get(3)
+hei = cap.get(4)
+
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 eyes = []
 while True:
     ret, frame = cap.read()
-    back = np.zeros((int(cap.get(4)),int(cap.get(3)),3), np.uint8)
+    back = np.zeros((int(hei),int(wid),3), np.uint8)
     back[:,0:int(cap.get(3))] = (255,0,0) #set background as blue (B,G,R)
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.2, 5)
-    for (x,y,w,h) in faces:
-        fx=x
-        fy=y
-        fw=w
-        fh=h
-        eyes = eye_cascade.detectMultiScale(gray, 1.2, 5)
+    for num, (x,y,w,h) in enumerate(faces):
+        if num == 0:
+            fx=x
+            fy=y
+            fw=w
+            fh=h
+            eyes = eye_cascade.detectMultiScale(gray, 1.2, 5)
     if fx<150: fx = 150
     if fy<240: fy = 240
     fx = fx
-    back[int(cap.get(4)/2)-240:int(cap.get(4)/2)+240, fx-150:fx+150] = body
-    if len(eyes) == 2:
-        eye_type = eye_open
-    elif len(eyes) == 0:
+    back[int(hei/2)-240:int(hei/2)+240, fx-150:fx+150] = body
+    eye_type = eye_open
+    if len(eyes) == 0:
         eye_type = eye_close
     elif len(eyes) == 1:
         for (tx,ty,tw,th) in eyes:
@@ -43,9 +46,9 @@ while True:
                 eye_type = wink_R
             else:
                 eye_type = wink_L
-    back[int(cap.get(4)/2)-130:int(cap.get(4)/2)-70, fx-64:fx+61] = eye_type
+    back[int(hei/2)-130:int(hei/2)-70, fx-64:fx+61] = eye_type
     cv2.imshow('avatar',back)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(24) & 0xFF == ord('q'):
         break
 
 
