@@ -1,3 +1,9 @@
+# This is a project I whipped up since I was bored. 
+# It is by no means a replacement for professional vtubing software as it takes up too much of the cpu and affects the performance.
+# However, this is still a viable option for those with higher end computers
+# The process of making this and setting up OBS for this in in my youtube.
+# youtube link: [insert link]
+
 import sys
 import cv2
 import numpy as np
